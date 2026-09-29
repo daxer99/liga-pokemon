@@ -1,0 +1,64 @@
+{% load static %}
+{% if tabla %}
+{% if destacados %}
+<dl class="destacados">
+  {% for d in destacados %}
+  <div>
+    <dt>{{ d.titulo }}</dt>
+    <dd>
+      <span class="destacados__nombres">{% if d.filas|length > 3 %}{{ d.filas|length }} jugadores{% else %}{% for f in d.filas %}<a href="{% url 'jugador' f.jugador.pop_id %}">{{ f.jugador }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}</span>
+      <span class="destacados__valor">{{ d.valor }}</span>
+    </dd>
+  </div>
+  {% endfor %}
+</dl>
+{% endif %}
+
+<div class="tabla-controles">
+  <button type="button" class="boton-sec" data-alternar-stats aria-pressed="false">Ver más estadísticas</button>
+  <span class="ayuda-tabla">Tocá un encabezado para ordenar.</span>
+</div>
+
+<div class="carta">
+  <table class="tabla tabla--liga" data-ordenable>
+    <thead>
+      <tr>
+        <th class="pos" scope="col" data-orden="num">#</th>
+        <th class="col-jugador" scope="col" data-orden="texto">Jugador</th>
+        <th class="num solo-ancho" scope="col" data-orden="num" title="Fechas jugadas">Fechas</th>
+        <th class="num" scope="col" data-orden="num" title="Victorias - Empates - Derrotas">V-E-D</th>
+        <th class="num extra" scope="col" data-orden="num" title="Porcentaje de partidas ganadas">% Vic.</th>
+        <th class="num extra" scope="col" data-orden="num" title="Puntos de partida obtenidos sobre los posibles (victoria 3, empate 1)">Rend.</th>
+        <th class="num extra" scope="col" data-orden="num" title="Promedio de puntos de liga por fecha jugada">Prom.</th>
+        <th class="num extra" scope="col" data-orden="num" title="Mejor puesto en una fecha">Mejor</th>
+        <th class="num extra" scope="col" data-orden="num" title="Mayor cantidad de victorias seguidas">Racha</th>
+        <th class="num" scope="col" data-orden="num">Pts</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in tabla %}
+      <tr class="{% if f.posicion == 1 %}podio-1{% endif %}">
+        <td class="pos" data-valor="{{ f.posicion }}">{{ f.posicion }}</td>
+        <td class="jugador col-jugador"><a href="{% url 'jugador' f.jugador.pop_id %}">{{ f.jugador }}</a></td>
+        <td class="num solo-ancho">{{ f.fechas }}</td>
+        <td class="num record" data-valor="{{ f.victorias }}"><span class="v">{{ f.victorias }}</span>-<span class="e">{{ f.empates }}</span>-<span class="d">{{ f.derrotas }}</span></td>
+        <td class="num extra {% if f.jugadas < minimo_partidas %}pocas{% endif %}" data-valor="{{ f.pct_victorias|stringformat:'.1f' }}">{{ f.pct_victorias|floatformat:"-1" }}%</td>
+        <td class="num extra {% if f.jugadas < minimo_partidas %}pocas{% endif %}" data-valor="{{ f.rendimiento|stringformat:'.1f' }}">{{ f.rendimiento|floatformat:"-1" }}%</td>
+        <td class="num extra" data-valor="{{ f.promedio_fecha|stringformat:'.1f' }}">{{ f.promedio_fecha|floatformat:"-1" }}</td>
+        <td class="num extra" data-valor="{{ f.mejor_puesto|default:999 }}">{% if f.mejor_puesto %}{{ f.mejor_puesto }}º{% else %}–{% endif %}</td>
+        <td class="num extra">{{ f.racha_max }}</td>
+        <td class="num pts">{{ f.puntos }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="bajada" style="margin-top:.75rem">
+  Participar suma {{ temporada.puntos_participacion }}, ganar suma {{ temporada.puntos_victoria }} más y empatar {{ temporada.puntos_empate }} más.
+  {% if temporada.bye_suma_puntos %}El bye suma {{ temporada.puntos_victoria|add:temporada.puntos_participacion }} puntos ({{ temporada.puntos_victoria }} por victoria y {{ temporada.puntos_participacion }} por participación).{% else %}El bye no suma puntos.{% endif %}
+  El bye figura como victoria en V-E-D y en los porcentajes. En gris, jugadores con menos de {{ minimo_partidas }} partidas.
+</p>
+<script src="{% static 'torneos/tabla.js' %}" defer></script>
+{% else %}
+<p class="vacio">Todavía no hay fechas cargadas en esta liga.</p>
+{% endif %}

@@ -1,0 +1,9 @@
+{% extends "torneos/base.html" %}
+{% block titulo %}{{ temporada.nombre }}{% endblock %}
+{% block contenido %}
+<h1>{{ temporada.nombre }}</h1>
+<p class="bajada">Tabla acumulada de todas las fechas jugadas.</p>
+{% include "torneos/_tabla.html" %}
+<h2>Fechas y torneos</h2>
+{% include "torneos/_lista_torneos.html" %}
+{% endblock %}

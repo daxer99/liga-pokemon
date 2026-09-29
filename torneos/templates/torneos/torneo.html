@@ -1,0 +1,44 @@
+{% extends "torneos/base.html" %}
+{% block titulo %}{{ torneo.nombre|title }}{% endblock %}
+{% block contenido %}
+<h1>{{ torneo.nombre|title }}</h1>
+<p class="bajada">
+  {{ torneo.fecha|date:"l j \d\e F \d\e Y" }}, {{ torneo.cantidad_rondas }} rondas.
+  <span class="etiqueta">{{ torneo.get_tipo_display }}</span>
+  {% if torneo.temporada %}Suma a <a href="{% url 'temporada' torneo.temporada.pk %}">{{ torneo.temporada }}</a>.{% endif %}
+</p>
+
+{% for division, participantes in divisiones.items %}
+<h2>Posiciones{% if divisiones|length > 1 %} en {{ division }}{% endif %}</h2>
+<div class="carta">
+  <table class="tabla">
+    <thead><tr><th class="pos" scope="col">#</th><th scope="col">Jugador</th><th class="num" scope="col">Estado</th></tr></thead>
+    <tbody>
+      {% for p in participantes %}
+      <tr class="{% if p.puesto == 1 %}podio-1{% endif %}">
+        <td class="pos">{{ p.puesto|default:"–" }}</td>
+        <td class="jugador"><a href="{% url 'jugador' p.jugador.pop_id %}">{{ p.jugador }}</a></td>
+        <td class="num record">{% if p.drop_ronda %}Abandonó en ronda {{ p.drop_ronda }}{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endfor %}
+
+<h2>Rondas</h2>
+{% for numero, partidas in rondas %}
+<details class="ronda" {% if forloop.last %}open{% endif %}>
+  <summary>Ronda {{ numero }}</summary>
+  {% for p in partidas %}
+  <div class="partida">
+    <span class="j1 {% if p.resultado == 1 or p.resultado == 5 %}ganador{% elif p.resultado == 2 or p.resultado == 8 %}perdedor{% endif %}">{{ p.jugador1 }}</span>
+    <span class="marcador {% if p.resultado == 3 %}empate{% endif %}">
+      {% if p.resultado == 1 %}1 – 0{% elif p.resultado == 2 %}0 – 1{% elif p.resultado == 3 %}Empate{% elif p.resultado == 5 %}Bye{% else %}{{ p.get_resultado_display }}{% endif %}
+    </span>
+    <span class="j2 {% if p.resultado == 2 %}ganador{% elif p.resultado == 1 %}perdedor{% endif %}">{{ p.jugador2|default:"" }}</span>
+  </div>
+  {% endfor %}
+</details>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "torneos/base.html" %}
+{% block titulo %}Torneos{% endblock %}
+{% block contenido %}
+<h1>Torneos</h1>
+{% if temporadas %}
+<p class="bajada">Ligas: {% for t in temporadas %}<a href="{% url 'temporada' t.pk %}">{{ t.nombre }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+{% endif %}
+{% include "torneos/_lista_torneos.html" %}
+{% endblock %}

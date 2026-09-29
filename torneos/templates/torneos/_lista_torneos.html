@@ -1,0 +1,12 @@
+{% if torneos %}
+<ul class="lista">
+  {% for t in torneos %}
+  <li><a href="{% url 'torneo' t.tom_id %}">
+    <span>{{ t.nombre|title }} {% if t.tipo != "liga" %}<span class="etiqueta">{{ t.get_tipo_display }}</span>{% endif %}</span>
+    <small>{{ t.fecha|date:"d/m/Y" }}</small>
+  </a></li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="vacio">No hay torneos cargados.</p>
+{% endif %}

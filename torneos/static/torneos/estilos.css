@@ -1,0 +1,223 @@
+/* Paleta: tinta de playmat, fondo frío, amarillo del borde de las cartas */
+:root {
+  --tinta: #1b2a4a;
+  --tinta-suave: #4a5775;
+  --fondo: #eef2f7;
+  --superficie: #ffffff;
+  --linea: #d8dfea;
+  --amarillo: #f4c430;
+  --amarillo-oscuro: #c99a0e;
+  --victoria: #2f8f5b;
+  --derrota: #c8463d;
+  --empate: #7c869a;
+  --radio: 10px;
+  --titulos: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --texto: "Barlow", "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--tinta);
+  font: 400 1rem/1.5 var(--texto);
+}
+
+a { color: inherit; text-decoration-color: var(--amarillo-oscuro); text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 2px; border-radius: 4px; }
+
+.barra {
+  background: var(--tinta);
+  color: #fff;
+}
+.barra__contenido {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: .75rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem 1.25rem;
+}
+.marca {
+  font: 700 1.4rem/1 var(--titulos);
+  text-decoration: none;
+  margin-right: auto;
+}
+.marca span { color: var(--amarillo); }
+.barra nav { display: flex; gap: 1rem; font-weight: 500; }
+.barra nav a { text-decoration: none; opacity: .85; }
+.barra nav a:hover, .barra nav a[aria-current="page"] { opacity: 1; text-decoration: underline; }
+
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+h1, h2, h3 { font-family: var(--titulos); line-height: 1.1; margin: 0 0 .5rem; }
+h1 { font-size: 2.25rem; font-weight: 700; }
+h2 { font-size: 1.6rem; font-weight: 600; margin-top: 2rem; }
+h3 { font-size: 1.25rem; font-weight: 600; }
+
+.bajada { color: var(--tinta-suave); margin: 0 0 1.25rem; }
+
+/* La tabla de la liga va enmarcada como una carta: es el elemento protagonista */
+.carta {
+  background: var(--superficie);
+  border: 8px solid var(--amarillo);
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--amarillo-oscuro);
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.tabla th {
+  font: 600 .95rem var(--titulos);
+  color: var(--tinta-suave);
+  text-align: left;
+  padding: .6rem .6rem;
+  border-bottom: 2px solid var(--linea);
+}
+.tabla td { padding: .55rem .6rem; border-bottom: 1px solid var(--linea); }
+.tabla tr:last-child td { border-bottom: 0; }
+.tabla .num { text-align: right; white-space: nowrap; }
+.tabla .pos { width: 2.5rem; font: 700 1.15rem var(--titulos); text-align: center; }
+.tabla .pts { font: 700 1.3rem var(--titulos); }
+.tabla .jugador a { text-decoration: none; font-weight: 500; }
+.tabla .jugador a:hover { text-decoration: underline; }
+.tabla tr.podio-1 .pos { color: var(--amarillo-oscuro); }
+.tabla tr.podio-1 td { background: #fdf6dc; }
+.record { color: var(--tinta-suave); }
+.v { color: var(--victoria); } .d { color: var(--derrota); } .e { color: var(--empate); }
+
+@media (max-width: 480px) {
+  .solo-ancho { display: none; }
+  .tabla td, .tabla th { padding-left: .4rem; padding-right: .4rem; }
+}
+
+/* Listas de torneos */
+.lista { list-style: none; margin: 0; padding: 0; background: var(--superficie); border-radius: var(--radio); border: 1px solid var(--linea); }
+.lista li { border-bottom: 1px solid var(--linea); }
+.lista li:last-child { border-bottom: 0; }
+.lista a { display: flex; justify-content: space-between; gap: 1rem; padding: .75rem 1rem; text-decoration: none; }
+.lista a:hover { background: var(--fondo); }
+.lista small { color: var(--tinta-suave); white-space: nowrap; }
+
+.etiqueta {
+  display: inline-block;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .1rem .5rem;
+  border-radius: 999px;
+  background: var(--fondo);
+  border: 1px solid var(--linea);
+}
+
+/* Rondas del torneo */
+details.ronda { background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); margin-bottom: .75rem; }
+details.ronda summary { cursor: pointer; padding: .75rem 1rem; font: 600 1.2rem var(--titulos); }
+details.ronda[open] summary { border-bottom: 1px solid var(--linea); }
+.partida {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: .75rem;
+  padding: .55rem 1rem;
+  border-bottom: 1px solid var(--linea);
+}
+.partida:last-child { border-bottom: 0; }
+.partida .j2 { text-align: right; }
+.partida .ganador { font-weight: 700; }
+.partida .perdedor { color: var(--tinta-suave); }
+.marcador { font: 600 .9rem var(--titulos); color: var(--tinta-suave); text-align: center; min-width: 4.5rem; }
+.marcador.empate { color: var(--empate); }
+
+/* Formularios y mensajes */
+.panel { background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); padding: 1.25rem; }
+.campo { margin-bottom: 1rem; }
+.campo label { display: block; font-weight: 600; margin-bottom: .25rem; }
+.campo .ayuda { font-size: .9rem; color: var(--tinta-suave); margin: .25rem 0 0; }
+.campo .error { color: var(--derrota); font-size: .9rem; margin: .25rem 0 0; }
+.campo input[type=file], .campo select { font: inherit; width: 100%; padding: .5rem; border: 1px solid var(--linea); border-radius: 6px; background: #fff; }
+.campo--check label { display: flex; gap: .5rem; align-items: center; font-weight: 500; }
+.boton {
+  font: 700 1.1rem var(--titulos);
+  background: var(--tinta); color: #fff;
+  border: 0; border-radius: 8px;
+  padding: .6rem 1.4rem; cursor: pointer;
+}
+.boton:hover { background: #26395f; }
+.mensaje { padding: .75rem 1rem; border-radius: var(--radio); margin-bottom: 1rem; background: #e3f3ea; border-left: 5px solid var(--victoria); }
+.vacio { padding: 1.5rem; text-align: center; color: var(--tinta-suave); background: var(--superficie); border-radius: var(--radio); border: 1px dashed var(--linea); }
+
+footer { text-align: center; color: var(--tinta-suave); font-size: .85rem; padding-bottom: 2rem; }
+
+/* Estadísticas extra de la tabla de liga */
+.tabla--liga .extra { display: none; }
+.carta.con-extras .tabla--liga .extra { display: table-cell; }
+.tabla--liga td.extra, .tabla--liga th.extra { white-space: nowrap; }
+.tabla td.pocas { color: #a3abbb; }
+.tabla th.ordenable { cursor: pointer; user-select: none; }
+.tabla th.ordenable:hover { color: var(--tinta); }
+.tabla th[aria-sort="descending"]::after { content: " ▾"; }
+.tabla th[aria-sort="ascending"]::after { content: " ▴"; }
+
+/* Con las extras abiertas en pantallas chicas, la tabla se desplaza y el nombre queda fijo */
+.carta.con-extras .col-jugador {
+  position: sticky; left: 0; z-index: 1;
+  background: var(--superficie);
+  box-shadow: 1px 0 0 var(--linea);
+}
+.carta.con-extras tr.podio-1 .col-jugador { background: #fdf6dc; }
+
+.tabla-controles { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; margin: 0 0 .75rem; }
+.ayuda-tabla { font-size: .9rem; color: var(--tinta-suave); }
+.boton-sec {
+  font: 600 1rem var(--titulos);
+  background: var(--superficie); color: var(--tinta);
+  border: 2px solid var(--tinta); border-radius: 8px;
+  padding: .35rem .9rem; cursor: pointer;
+}
+.boton-sec[aria-pressed="true"] { background: var(--tinta); color: #fff; }
+
+/* Destacados de la temporada */
+.destacados {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: .5rem;
+  margin: 0 0 1.25rem;
+}
+.destacados > div {
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-left: 5px solid var(--amarillo);
+  border-radius: 8px;
+  padding: .55rem .8rem;
+}
+.destacados dt { font-size: .85rem; color: var(--tinta-suave); }
+.destacados dd { margin: 0; display: flex; flex-direction: column; font-weight: 600; }
+.destacados__valor { font: 700 1.25rem var(--titulos); color: var(--amarillo-oscuro); order: -1; }
+.destacados a { text-decoration: none; }
+
+.carta.con-extras .col-jugador { min-width: 9.5rem; }
+
+/* En el celular los destacados se deslizan de costado para no tapar la tabla */
+@media (max-width: 600px) {
+  .destacados {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-right: -1rem;
+    padding-right: 1rem;
+  }
+  .destacados > div { flex: 0 0 62%; scroll-snap-align: start; }
+}
+.carta.con-extras .tabla td, .carta.con-extras .tabla th { padding-left: .45rem; padding-right: .45rem; }
+@media (min-width: 700px) { .carta.con-extras .col-jugador { white-space: nowrap; } }

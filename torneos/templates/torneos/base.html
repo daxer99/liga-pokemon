@@ -1,0 +1,30 @@
+{% load static %}<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Liga Pokémon TCG Paraná{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'torneos/estilos.css' %}">
+</head>
+<body>
+  <header class="barra">
+    <div class="barra__contenido">
+      {# Cambiá el nombre de la tienda/liga acá #}
+      <a class="marca" href="{% url 'inicio' %}">Liga <span>Paraná</span></a>
+      <nav>
+        <a href="{% url 'inicio' %}">Tabla</a>
+        <a href="{% url 'torneos' %}">Torneos</a>
+        {% if user.is_staff %}<a href="{% url 'importar' %}">Cargar .tdf</a>{% endif %}
+      </nav>
+    </div>
+  </header>
+  <main>
+    {% for m in messages %}<p class="mensaje">{{ m }}</p>{% endfor %}
+    {% block contenido %}{% endblock %}
+  </main>
+  <footer>Resultados oficiales cargados desde TOM.</footer>
+</body>
+</html>

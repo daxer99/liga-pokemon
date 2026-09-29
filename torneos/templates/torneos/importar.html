@@ -1,0 +1,22 @@
+{% extends "torneos/base.html" %}
+{% block titulo %}Cargar resultados{% endblock %}
+{% block contenido %}
+<h1>Cargar resultados</h1>
+<p class="bajada">Subí el .tdf que exporta TOM al cerrar el torneo. La tabla de la liga se actualiza sola.</p>
+<form class="panel" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% for campo in form %}
+  <div class="campo {% if campo.widget_type == 'checkbox' %}campo--check{% endif %}">
+    {% if campo.widget_type == 'checkbox' %}
+      <label>{{ campo }} {{ campo.label }}</label>
+    {% else %}
+      <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+      {{ campo }}
+    {% endif %}
+    {% if campo.help_text %}<p class="ayuda">{{ campo.help_text }}</p>{% endif %}
+    {% for e in campo.errors %}<p class="error">{{ e }}</p>{% endfor %}
+  </div>
+  {% endfor %}
+  <button class="boton" type="submit">Importar torneo</button>
+</form>
+{% endblock %}

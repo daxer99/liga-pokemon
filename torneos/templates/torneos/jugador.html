@@ -1,0 +1,22 @@
+{% extends "torneos/base.html" %}
+{% block titulo %}{{ jugador }}{% endblock %}
+{% block contenido %}
+<h1>{{ jugador }}</h1>
+<p class="bajada">{{ filas|length }} torneo{{ filas|length|pluralize }} jugado{{ filas|length|pluralize }}.</p>
+{% if filas %}
+<div class="carta">
+  <table class="tabla">
+    <thead><tr><th scope="col">Torneo</th><th class="num" scope="col">V-E-D</th><th class="num" scope="col">Puesto</th></tr></thead>
+    <tbody>
+      {% for p, r in filas %}
+      <tr>
+        <td class="jugador"><a href="{% url 'torneo' p.torneo.tom_id %}">{{ p.torneo.nombre|title }}</a><br><small class="record">{{ p.torneo.fecha|date:"d/m/Y" }}</small></td>
+        <td class="num record"><span class="v">{{ r.v }}</span>-<span class="e">{{ r.e }}</span>-<span class="d">{{ r.d }}</span></td>
+        <td class="num pts">{{ p.puesto|default:"–" }}º</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}
